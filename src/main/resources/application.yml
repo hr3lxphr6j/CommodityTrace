@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    username: root
+    password: 8681700
+    url: jdbc:mysql://localhost:3306/commodity_trace
+    driver-class-name: com.mysql.jdbc.Driver
+  thymeleaf:
+    cache: false
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    database: mysql
+  jackson:
+    serialization: true
+  jersey:
+    application-path: /api
