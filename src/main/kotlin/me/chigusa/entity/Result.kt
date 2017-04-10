@@ -1,9 +1,14 @@
 package me.chigusa.entity
 
+
 /**
  * @author Chigusa
- * @function
+ * @function 返回对象
  * @date 2017/3/14
  */
-class Result {
+data class Result<T>(
+        var eCode: Int,
+        var eMessage: String? = null,
+        var data: T? = null
+) {
 }
