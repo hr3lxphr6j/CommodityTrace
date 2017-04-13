@@ -2,7 +2,7 @@ spring:
   datasource:
     username: root
     password: 8681700
-    url: jdbc:mysql://localhost:3306/commodity_trace
+    url: jdbc:mysql://192.168.100.2:3306/commodity_trace
     driver-class-name: com.mysql.jdbc.Driver
   jpa:
     hibernate:
@@ -15,8 +15,10 @@ spring:
     ansi:
       enabled: always
   redis:
-    host: localhost
+    host: 192.168.100.2
     port: 6379
     database: 0
 server:
   context-path: /api
+logging:
+  level: debug

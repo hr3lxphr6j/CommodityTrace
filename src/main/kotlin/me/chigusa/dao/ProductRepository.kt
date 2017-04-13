@@ -1,6 +1,7 @@
 package me.chigusa.dao
 
 import me.chigusa.entity.Product
+import me.chigusa.entity.User
 import org.springframework.data.jpa.repository.JpaRepository
 
 /**
@@ -9,4 +10,5 @@ import org.springframework.data.jpa.repository.JpaRepository
  * @date 2017/3/14
  */
 interface ProductRepository : JpaRepository<Product, Long> {
+    fun findByUser(user: User): List<Product>
 }

@@ -10,7 +10,6 @@ class CommodityTraceApplication
 
 fun main(args: Array<String>) {
     SpringApplication.run(CommodityTraceApplication::class.java, *args)
-
 }
 
 

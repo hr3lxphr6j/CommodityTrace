@@ -12,7 +12,6 @@ data class Product(
         /**
          * 产品ID，非空主键，暂定自增，唯一
          */
-        //todo:决定主键增加算法
         @Id @GeneratedValue @Column(nullable = false, unique = true) var id: Long? = -1,
 
         /**

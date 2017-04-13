@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 /**
  * @author Chigusa
- * @function
+ * @function 用户数据访问接口
  * @date 2017/4/6
  */
 interface UserRepository : JpaRepository<User, Long> {
