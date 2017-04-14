@@ -23,7 +23,7 @@ class ComplaintService {
      * 判断是否存在
      */
     private fun exist(id: Long) {
-        if (complaintRepository!!.exists(id)) {
+        if (!complaintRepository!!.exists(id)) {
             throw ComplaintIdNotFoundException(id)
         }
     }
@@ -69,7 +69,7 @@ class ComplaintService {
     /**
      * 根据被投诉产品查询
      */
-    fun loadComplaintsByUser(product: Product): List<Complaint> {
+    fun loadComplaintsByProduct(product: Product): List<Complaint> {
         return complaintRepository!!.findByProduct(product)
     }
 

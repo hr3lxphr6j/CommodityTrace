@@ -4,8 +4,13 @@ import me.chigusa.dao.ProductRepository
 import me.chigusa.entity.Product
 import me.chigusa.exception.product.ProductIdNotFoundException
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.cache.annotation.CacheEvict
+import org.springframework.cache.annotation.CachePut
+import org.springframework.cache.annotation.Cacheable
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.web.bind.annotation.PostMapping
 
 
 /**
@@ -22,6 +27,7 @@ class ProductService {
     /**
      * 增加产品
      */
+    @CachePut(value = "product",key = "#product.id")
     fun addProduct(product: Product) {
         productRepository!!.save(product)
     }
@@ -37,7 +43,7 @@ class ProductService {
      * 根据id查询是否存在
      */
     private fun exist(id: Long) {
-        if (productRepository!!.exists(id)) {
+        if (!productRepository!!.exists(id)) {
             throw ProductIdNotFoundException(id)
         }
     }
@@ -45,6 +51,7 @@ class ProductService {
     /**
      * 根据ID返回产品
      */
+    @Cacheable(value = "product",key = "#id")
     fun loadProductById(id: Long): Product {
         exist(id)
         return productRepository!!.findOne(id)
@@ -53,6 +60,7 @@ class ProductService {
     /**
      * 修改产品数据
      */
+    @CachePut(value = "product",key = "#product.id")
     fun patchProduct(product: Product) {
         exist(product.id!!)
         productRepository!!.save(product)
@@ -61,9 +69,10 @@ class ProductService {
     /**
      * 删除产品数据
      */
-    fun delProduct(product: Product) {
-        exist(product.id!!)
-        productRepository!!.delete(product)
+    @CacheEvict(value = "product",key = "#id")
+    fun delProduct(id: Long) {
+        exist(id)
+        productRepository!!.delete(id)
     }
 
 }

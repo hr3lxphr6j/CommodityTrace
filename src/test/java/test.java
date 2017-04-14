@@ -1,11 +1,8 @@
-
-
 /**
  * @author Chigusa
  * @function
- * @date 2017/3/19
+ * @date 2017/4/15
  */
-public class test  {
-
+public class test {
 
 }

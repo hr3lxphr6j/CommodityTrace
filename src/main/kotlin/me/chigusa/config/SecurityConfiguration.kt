@@ -53,9 +53,9 @@ class SecurityConfiguration : WebSecurityConfigurerAdapter() {
     override fun configure(http: HttpSecurity?) {
         http!!
                 .csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/producer/**").hasAnyRole("PRODUCER", "ADMIN")
-                .and().httpBasic()
+//                .authorizeRequests()
+//                .antMatchers("/producer/**").hasAnyRole("PRODUCER", "ADMIN")
+                .httpBasic()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
     }
 }

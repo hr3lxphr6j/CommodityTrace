@@ -10,6 +10,7 @@ buildscript {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
 		classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
 		classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
+
 	}
 }
 
@@ -20,7 +21,7 @@ apply plugin: 'org.springframework.boot'
 
 jar {
 	baseName = 'commoditytrace'
-	version = '0.0.1-SNAPSHOT'
+	version = '0.1'
 }
 
 sourceCompatibility = 1.8
@@ -31,6 +32,8 @@ repositories {
 
 
 dependencies {
+//	compile "com.fasterxml.jackson.module:jackson-module-kotlin:2.8.7"
+	compile('org.springframework.boot:spring-boot-starter-cache')
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
 	compile('org.springframework.boot:spring-boot-starter-data-redis')
 	compile('org.springframework.boot:spring-boot-starter-security')

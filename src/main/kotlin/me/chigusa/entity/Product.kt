@@ -1,6 +1,11 @@
 package me.chigusa.entity
 
+
+import com.fasterxml.jackson.annotation.JsonIgnore
+import org.hibernate.validator.constraints.NotEmpty
+import java.io.Serializable
 import javax.persistence.*
+import javax.validation.constraints.NotNull
 
 /**
  * @author Chigusa
@@ -17,22 +22,22 @@ data class Product(
         /**
          * 产品名称，非空
          */
-        @Column(nullable = false) var name: String? = "",
+        @Column(nullable = false) @NotEmpty var name: String? = "",
 
         /**
          * 规格，非空
          */
-        @Column(nullable = false) var standard: String? = "",
+        @Column(nullable = false) @NotEmpty var standard: String? = "",
 
         /**
          * 产地，非空
          */
-        @Column(nullable = false) var producingArea: String? = "",
+        @Column(nullable = false) @NotEmpty var producingArea: String? = "",
 
         /**
          * 生产者，非空，外键
          */
-        @ManyToOne @JoinColumn(nullable = false) var user: User? = null,
+        @ManyToOne @JoinColumn(nullable = false) @NotNull @JsonIgnore var user: User? = null,
 
         /**
          * 是否为转基因
@@ -41,5 +46,5 @@ data class Product(
          * 2：未知
          */
         @Column(nullable = false) var isGM: Int? = 2
-) {
+) : Serializable {
 }

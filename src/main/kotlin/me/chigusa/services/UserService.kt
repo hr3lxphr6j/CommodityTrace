@@ -5,6 +5,9 @@ import me.chigusa.entity.User
 import me.chigusa.exception.user.UserIdNotFoundException
 import me.chigusa.exception.user.UserNameExistException
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.cache.annotation.CacheEvict
+import org.springframework.cache.annotation.CachePut
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
@@ -42,7 +45,7 @@ class UserService : UserDetailsService {
      * 根据id查询是否存在
      */
     private fun exist(id: Long) {
-        if (userRepository!!.exists(id)) {
+        if (!userRepository!!.exists(id)) {
             throw UserIdNotFoundException(id)
         }
     }
@@ -50,10 +53,12 @@ class UserService : UserDetailsService {
     /**
      * 增加用户
      */
+    @CachePut(value = "user", key = "#user.id")
     fun addUser(user: User) {
         if (userRepository!!.findByName(user.name) != null) {
             throw UserNameExistException(user.name!!)
         }
+        print(user.name)
         user.pwd = passwordEncoder!!.encode(user.pwd)
         userRepository!!.save(user)
     }
@@ -61,6 +66,7 @@ class UserService : UserDetailsService {
     /**
      * 根据id查询用户
      */
+    @Cacheable(value = "user", key = "#id")
     fun loadUserById(id: Long): UserDetails {
         exist(id)
         return userRepository!!.findOne(id)
@@ -69,6 +75,7 @@ class UserService : UserDetailsService {
     /**
      * 修改用户数据
      */
+    @CachePut(value = "user", key = "#user.id")
     fun patchUser(user: User) {
         exist(user.id!!)
         userRepository!!.save(user)
@@ -77,9 +84,10 @@ class UserService : UserDetailsService {
     /**
      * 删除用户
      */
-    fun delUser(user: User) {
-        exist(user.id!!)
-        userRepository!!.delete(user)
+    @CacheEvict(value = "user", key = "#id")
+    fun delUser(id: Long) {
+        exist(id)
+        userRepository!!.delete(id)
     }
 
     /**

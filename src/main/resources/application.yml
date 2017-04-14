@@ -19,6 +19,6 @@ spring:
     port: 6379
     database: 0
 server:
-  context-path: /api
+  context-path: /api/v1
 logging:
   level: debug
