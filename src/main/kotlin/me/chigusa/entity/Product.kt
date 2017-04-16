@@ -34,6 +34,7 @@ data class Product(
          */
         @Column(nullable = false) @NotEmpty var producingArea: String? = "",
 
+
         /**
          * 生产者，非空，外键
          */
@@ -43,8 +44,9 @@ data class Product(
          * 是否为转基因
          * 0：不是
          * 1：是
-         * 2：未知
          */
-        @Column(nullable = false) var isGM: Int? = 2
+        @Column(nullable = false) @NotEmpty var isgm: Int? = 0
+
+
 ) : Serializable {
 }
