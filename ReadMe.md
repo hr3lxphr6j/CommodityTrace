@@ -20,5 +20,16 @@ CREATE DATABASE commodity_trace
 ```
 docker run --name redis -p 6379:6379 -d redis
 ```
-
-
+## 编译打包
+```
+./gradle build
+```
+## 运行
+```
+./gradle bootRun
+```
+or
+```
+./gradle build
+java -jar build/libs/commoditytrace-0.1.jar
+```
