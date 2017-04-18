@@ -10,26 +10,26 @@
 ## 数据库部署
 * MariaDB
 
-```
-docker run --name mariadb -p 3306:3306 -e MYSQL_ROOT_PASSWORD=8681700 -d mariadb --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+```Bash
+docker run --name mariadb -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root -d mariadb --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
 ```
 ```mysql
-CREATE DATABASE commodity_trace
+CREATE DATABASE commodity_trace;
 ```
 * Redis
-```
+```Bash
 docker run --name redis -p 6379:6379 -d redis
 ```
 ## 编译打包
-```
+```Bash
 ./gradle build
 ```
 ## 运行
-```
-./gradle bootRun
+```Bash
+./gradlew bootRun
 ```
 or
-```
-./gradle build
+```Bash
+./gradlew build
 java -jar build/libs/commoditytrace-0.1.jar
 ```
