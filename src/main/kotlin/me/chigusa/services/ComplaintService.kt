@@ -5,6 +5,9 @@ import me.chigusa.entity.Complaint
 import me.chigusa.entity.Product
 import me.chigusa.exception.complaint.ComplaintIdNotFoundException
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.cache.annotation.CacheEvict
+import org.springframework.cache.annotation.CachePut
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -38,6 +41,7 @@ class ComplaintService {
     /**
      * 增加投诉
      */
+    @CachePut(value = "complaint",key = "#complaint.id")
     fun addComplaint(complaint: Complaint) {
         complaintRepository!!.save(complaint)
     }
@@ -45,6 +49,7 @@ class ComplaintService {
     /**
      * 修改投诉
      */
+    @CachePut(value = "complaint",key = "#complaint.id")
     fun patchComplaint(complaint: Complaint) {
         exist(complaint.id!!)
         complaintRepository!!.save(complaint)
@@ -53,6 +58,7 @@ class ComplaintService {
     /**
      * 删除投诉
      */
+    @CacheEvict(value = "complaint",key = "#complaint.id")
     fun delComplaint(complaint: Complaint) {
         exist(complaint.id!!)
         complaintRepository!!.delete(complaint)
@@ -61,6 +67,7 @@ class ComplaintService {
     /**
      * 根据ID查询投诉
      */
+    @Cacheable(value = "complaint",key = "#id")
     fun loadComplaintById(id: Long): Complaint {
         exist(id)
         return complaintRepository!!.findOne(id)

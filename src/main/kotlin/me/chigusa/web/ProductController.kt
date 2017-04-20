@@ -2,6 +2,7 @@ package me.chigusa.web
 
 import me.chigusa.entity.Complaint
 import me.chigusa.entity.Product
+import me.chigusa.entity.User
 import me.chigusa.exception.product.ProductIdNotFoundException
 import me.chigusa.services.ComplaintService
 import me.chigusa.services.ProductService
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
@@ -18,6 +20,7 @@ import javax.validation.Valid
  * @function Product Controller
  * @date 2017/4/13
  */
+@CrossOrigin(origins = arrayOf("*"), maxAge = 3600)
 @RestController
 @RequestMapping("product")
 class ProductController {
@@ -40,8 +43,8 @@ class ProductController {
      */
     @PostMapping()
     @PreAuthorize("hasAnyRole('ADMIN','PRODUCER')")
-    fun addProduct(@Valid @RequestBody() product: Product, bindingResult: BindingResult) {
-        productService!!.addProduct(product)
+    fun addProduct(@AuthenticationPrincipal user: User, @Valid @RequestBody() product: Product, bindingResult: BindingResult) {
+        productService!!.addProduct(product.apply { this.user = user })
     }
 
     /**

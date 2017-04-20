@@ -1,6 +1,8 @@
 package me.chigusa.web
 
+import me.chigusa.dao.ProductRepository
 import me.chigusa.dao.RoleRepository
+import me.chigusa.entity.Product
 import me.chigusa.entity.Role
 import me.chigusa.entity.User
 import me.chigusa.services.UserService
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
@@ -20,6 +23,7 @@ import javax.validation.Valid
  * @function User Controller
  * @date 2017/4/13
  */
+@CrossOrigin(origins = arrayOf("*"), maxAge = 3600)
 @RestController
 @RequestMapping("user")
 class UserController {
@@ -29,6 +33,8 @@ class UserController {
     val userService: UserService? = null
     @Autowired
     val roleRepository: RoleRepository? = null
+    @Autowired
+    val productRepository: ProductRepository? = null
 
     /**
      * 增加用户
@@ -60,6 +66,15 @@ class UserController {
     }
 
     /**
+     * 用户登陆处理
+     */
+    @PostMapping("login")
+    @PreAuthorize("hasAnyRole('ADMIN','PRODUCER')")
+    fun login(@AuthenticationPrincipal user: User): ResponseEntity<UserDetails> {
+        return ResponseEntity(user, HttpStatus.OK)
+    }
+
+    /**
      * 根据ID更新用户信息
      * 需要 ADMIN 权限 或为当前用户
      */
@@ -77,6 +92,12 @@ class UserController {
     @PreAuthorize("hasRole('ADMIN') or #id == principal.id")
     fun delUserById(@PathVariable id: Long) {
         userService!!.delUser(id)
+    }
+
+    @GetMapping("{id}/product")
+    @PreAuthorize("hasRole('ADMIN') or #id == principal.id")
+    fun getProductsByUser(@PathVariable id: Long): ResponseEntity<List<Product>> {
+        return ResponseEntity(productRepository!!.findByUser(userService!!.loadUserById(id) as User), HttpStatus.OK)
     }
 
     /**
